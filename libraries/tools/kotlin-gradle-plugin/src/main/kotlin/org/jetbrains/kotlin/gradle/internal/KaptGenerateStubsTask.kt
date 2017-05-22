@@ -46,7 +46,8 @@ open class KaptGenerateStubsTask : KotlinCompile() {
 
         return !source.isInside(destinationDir) &&
                !source.isInside(stubsDir) &&
-               !source.isInside(generatedSourcesDir)
+               !source.isInside(generatedSourcesDir) &&
+               !source.isInside(kotlinCompileTask.destinationDir)
     }
 
     override fun execute(inputs: IncrementalTaskInputs) {
