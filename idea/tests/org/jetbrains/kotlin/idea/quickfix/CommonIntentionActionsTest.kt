@@ -124,8 +124,8 @@ class CommonIntentionActionsTest : LightPlatformCodeInsightFixtureTestCase() {
         |}
         """.trim().trimMargin())
 
-        myFixture.launchAction(codeModifications.createAddPropertyAction(
-                atCaret<UClass>(myFixture), "baz", PsiModifier.PUBLIC, PsiType.getTypeByName("java.lang.String", project, GlobalSearchScope.allScope(project)), true, true, true)!!)
+        myFixture.launchAction(codeModifications.createAddBeanPropertyActions(
+                atCaret<UClass>(myFixture), "baz", PsiModifier.PUBLIC, PsiType.getTypeByName("java.lang.String", project, GlobalSearchScope.allScope(project)), true, true).first())
         myFixture.checkResult("""
         |class Foo {
         |    var baz: String
@@ -141,8 +141,8 @@ class CommonIntentionActionsTest : LightPlatformCodeInsightFixtureTestCase() {
         |}
         """.trim().trimMargin())
 
-        myFixture.launchAction(codeModifications.createAddPropertyAction(
-                atCaret<UClass>(myFixture), "baz", PsiModifier.PUBLIC, PsiType.getTypeByName("java.lang.String", project, GlobalSearchScope.allScope(project)), true, false, true)!!)
+        myFixture.launchAction(codeModifications.createAddBeanPropertyActions(
+                atCaret<UClass>(myFixture), "baz", PsiModifier.PUBLIC, PsiType.getTypeByName("java.lang.String", project, GlobalSearchScope.allScope(project)), true, false).first())
         myFixture.checkResult("""
         |class Foo {
         |    val baz: String
@@ -157,7 +157,7 @@ class CommonIntentionActionsTest : LightPlatformCodeInsightFixtureTestCase() {
     }
 
     private val codeModifications: JvmCommonIntentionActionsFactory
-        get() = JvmCommonIntentionActionsFactory.forLanguage(Language.findLanguageByID("kotlin")!!)
+        get() = JvmCommonIntentionActionsFactory.forLanguage(Language.findLanguageByID("kotlin")!!)!!
 
 }
 

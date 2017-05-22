@@ -106,23 +106,23 @@ class KotlinCommonIntentionActionsFactory : JvmCommonIntentionActionsFactory() {
 
     }
 
-    override fun createAddPropertyAction(uClass: UClass, propertyName: String, visibilityModifier: String, type: PsiType, field: Boolean, setter: Boolean, getter: Boolean): IntentionAction? {
+    override fun createAddBeanPropertyActions(uClass: UClass, propertyName: String, visibilityModifier: String, propertyType: PsiType, setterRequired: Boolean, getterRequired: Boolean): Array<IntentionAction> {
 
-        return object : LocalQuickFixAndIntentionActionOnPsiElement(uClass) {
+        return arrayOf(object : LocalQuickFixAndIntentionActionOnPsiElement(uClass) {
             override fun getFamilyName(): String = "Add property"
 
-            private val text = "Add '${if (setter) "var" else "val"}' property '$propertyName' to '${uClass.name}'"
+            private val text = "Add '${if (setterRequired) "var" else "val"}' property '$propertyName' to '${uClass.name}'"
 
             override fun getText(): String = text
 
             override fun invoke(project: Project, file: PsiFile, editor: Editor?, startElement: PsiElement, endElement: PsiElement) {
                 val visibilityStr = javaVisibilityMapping.getValue(visibilityModifier)
                 val psiFactory = KtPsiFactory(uClass)
-                val function = psiFactory.createProperty(visibilityStr, propertyName, typeString(type), setter, null)
+                val function = psiFactory.createProperty(visibilityStr, propertyName, typeString(propertyType), setterRequired, null)
                 val ktClassOrObject = uClass.asKtElement<KtClassOrObject>()!!
                 insertMembersAfter(null, ktClassOrObject, listOf(function), null)
             }
-        }
+        })
     }
 
 
